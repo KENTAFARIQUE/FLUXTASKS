@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html lang="en">
+<body>
+<div class="bg-light w-100 p-3">
+{% if not current_user.is_authenticated %}
+<div class="jumbotron">
+    <h1 class="display-3">Привет!</h1>
+    <a class="btn btn-waning btn-lg" href="/register" role="button">Чтобы начать пользоваться сайтом нужно
+        зарегистрироваться или войти</a>
+</div>
+{% else %}
+    <div class="menu">
+        <h1>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <div class="dropdown ms-1">
+                        <button class="btn btn-warning dropdown-toggle"
+                                type="button" id="dropdownMenu1" data-bs-toggle="dropdown">Папки
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {% for item in folders %}
+                                    <li>
+                                        <a class="dropdown-item" href="../index/{{ item.id }}">{{ item.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="../index">Все</a>
+                                </li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/folder">Добавить +</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a type="button" class="btn btn" href="/status">Добавить статус</a>
+                </li>
+                <li class="nav-item">
+                    <a type="button" class="btn btn" href="/task">Добавить задачу</a>
+                </li>
+            </ul>
+        </h1>
+    </div>
+<h1>
+    Все задачи в категории: {{ folder_name }}
+</h1>
+{% for item in tasks%}
+<div class="shadow p-3 mb-5">
+    <h2>{{item.title}}</h2>
+    <div>
+        {{item.description}}
+    </div>
+    <div>
+        <span class="border border-warning">{{ item.status }}</span>,
+        {% if item.importance.id == 3 %}
+        <span class="border border-success">{{ item.importance }}</span>
+        {% endif %}
+        {% if item.importance.id == 2 %}
+        <span class="border border-warning">{{ item.importance }}</span>
+        {% endif %}
+        {% if item.importance.id == 1 %}
+        <span class="border border-danger">{{ item.importance }}</span>
+        {% endif %}
+        ,Дата написания - {{item.created_date}}
+    </div>
+    <br>
+    {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/delete_task/{{ item.id }}" class="btn btn-warning">
+            Удалить
+        </a>
+        <a href="/task_edit/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+</div>
+</body>
+</html>
+{% endblock %}

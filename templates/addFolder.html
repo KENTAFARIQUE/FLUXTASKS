@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html>
+<h1>Добавить папку</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-warning" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+</form>
+</html>
+{% endblock %}
