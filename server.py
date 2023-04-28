@@ -31,6 +31,12 @@ current_user_id = 0
 loggin = False
 
 
+@app.route('/bg', methods=['GET', 'POST'])
+@login_required
+def bg():
+    
+
+
 @app.route('/folder', methods=['GET', 'POST'])
 @login_required
 def folder():
@@ -70,7 +76,7 @@ def task_edit(id):
     form = EditTaskForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        task = db_sess.query(Tasks).filter(Tasks.id == id,).first()
+        task = db_sess.query(Tasks).filter(Tasks.id == id, ).first()
 
         if task:
             form.name.data = task.title
