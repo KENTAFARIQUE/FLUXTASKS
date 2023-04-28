@@ -12,15 +12,25 @@
             integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
             crossorigin="anonymous"></script>
     <title>Fluxtasks</title>
-      <style>
+
+      {% if img %}
+    <style>
    body {
-    background: url(static/img/bg.jpg) no-repeat;
+    background: url({{ img }}) no-repeat;
     -moz-background-size: 100%;
     -webkit-background-size: 100%;
     -o-background-size: 100%;
     background-size: 100%;
     }
-        </style>
+    </style>
+      {% else %}
+    <style>
+      body {
+    background-color: #B8B8B8
+    }
+      #B8B8B8
+    </style>
+    {% endif %}
 </head>
 <body>
 <header>
@@ -39,7 +49,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
               <li><a class="dropdown-item" href="/logout">Выйти</a></li>
-              <li><a class="dropdown-item" href="#!">Профиль</a></li>
+              <li><a class="dropdown-item" href="/profile">Профиль</a></li>
           </ul>
         </div>
         {% else %}
@@ -52,7 +62,7 @@
 </header>
 <!-- Begin page content -->
 <main role="main" class="container">
-    <div class="bg-light w-100 p-3">
+    <div class="shadow-lg p-1 mb-3 bg-light rounded w-100 p-3">
          {% block content %}{% endblock %}
     </div>
 </main>

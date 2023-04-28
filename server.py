@@ -27,14 +27,23 @@ app.config['GALLERY_FOLDER'] = 'static/img'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-current_user_id = 0
-loggin = False
 
-
-@app.route('/bg', methods=['GET', 'POST'])
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
-def bg():
-    
+def profile():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    username = user.login.upper()
+    about = user.about
+    email = user.email
+    img = user.img
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(os.path.join(app.config['GALLERY_FOLDER'], f'{current_user.id}.jpg'))
+        user.img = f"{app.config['GALLERY_FOLDER']}/{current_user.id}.jpg"
+        db_sess.commit()
+        redirect('/index')
+    return render_template('profile.html', username=username, about=about, email=email, img=img)
 
 
 @app.route('/folder', methods=['GET', 'POST'])
